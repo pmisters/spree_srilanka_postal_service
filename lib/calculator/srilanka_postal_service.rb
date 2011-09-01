@@ -23,30 +23,24 @@ class Calculator::SrilankaPostalService < Calculator
   end
   
   def compute(order)
-    debug = false
-    puts order if debug
-    
     total_weight, shipping = 0, 0
     prices = self.preferred_price_table.split.map{ |price| price.to_f }
-    puts prices.join(" ") if debug
     
     # determine total weight
     order.line_items.each do |item|
       total_weight += item.variant.weight * item.quantity
     end
-    puts "Weight: " + total_weight.to_s if debug
-    
-    weights = self.preferred_weight_table.split.map{ |weight| weight.to_f }
-    puts weights.join(" ") if debug
+    return calculate_price_for(total_weight)
+  end
+  
+  def calculate_price_for(weight)
+    weights = self.preferred_weight_table.split.map{ |w| w.to_f }
     index = 0
     weights.each_index do |k|
       index = k
-      break if total_weight <= weights[k]
+      break if weight <= weights[k]
     end
     shipping = prices[index]
-    puts "Shipping: " + shipping.to_s if debug
-    puts "Handling: " + self.preferred_handling_tax.to_s if debug
-    
     return shipping + self.preferred_handling_tax
   end
 end
