@@ -24,8 +24,6 @@ class Calculator::SrilankaPostalService < Calculator
   
   def compute(order)
     total_weight, shipping = 0, 0
-    prices = self.preferred_price_table.split.map{ |price| price.to_f }
-    
     # determine total weight
     order.line_items.each do |item|
       total_weight += item.variant.weight * item.quantity
@@ -34,6 +32,7 @@ class Calculator::SrilankaPostalService < Calculator
   end
   
   def calculate_price_for(weight)
+    prices = self.preferred_price_table.split.map{ |price| price.to_f }
     weights = self.preferred_weight_table.split.map{ |w| w.to_f }
     index = 0
     weights.each_index do |k|
