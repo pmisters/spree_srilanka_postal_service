@@ -33,6 +33,7 @@ class Calculator::SrilankaPostalService < Calculator
   end
   
   def calculate_price_for(weight)
+    return if weight > self.preferred_max_total_weight
     prices = self.preferred_price_table.split.map{ |price| price.to_f }
     weights = self.preferred_weight_table.split.map{ |w| w.to_f }
     index = 0
