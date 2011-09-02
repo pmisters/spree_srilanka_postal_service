@@ -23,6 +23,7 @@ class Calculator::SrilankaPostalService < Calculator
   end
   
   def compute(order)
+    return unless available? order
     total_weight, shipping = 0, 0
     # determine total weight
     order.line_items.each do |item|
